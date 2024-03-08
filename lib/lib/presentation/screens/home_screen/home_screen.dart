@@ -1,10 +1,5 @@
-import 'dart:developer';
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/lib/bloc/weather_bloc/weather_bloc.dart';
 import 'package:weather_app/lib/presentation/widgets/glass_tile.dart';
@@ -48,12 +43,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   bloc: weatherBloc,
                   builder: (context, state) {
                     String? city = 'City';
+                    bool? fetching = false;
+
+                    if (state is WeatherLoadingST) {
+                      fetching = state.isLoading;
+                    }
 
                     if (state is CurrentWeatherLoadedST) {
                       city = state.weatherModel.name!;
                     }
 
                     return WeatherWidget(
+                        isLoading: fetching,
                         weather: city,
                         desc:
                             'sda'); /*Column(
