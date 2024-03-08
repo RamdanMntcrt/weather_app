@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -6,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:weather/weather.dart';
+import 'package:weather_app/lib/data/models/weather_model.dart';
 import 'package:weather_app/lib/data/repository/weather_repository.dart';
 import 'package:weather_app/lib/resources/utils/string_constants.dart';
 
@@ -16,6 +18,7 @@ part 'weather_state.dart';
 WeatherFactory? wf;
 String? _cityName;
 WeatherRepo weatherRepo = WeatherRepo();
+WeatherModel? weatherModel;
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc() : super(WeatherInitial()) {
@@ -30,14 +33,22 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   FutureOr<void> getCurrentWeatherMethod(
       GetCurrentWeatherET event, Emitter<WeatherState> emit) async {
     emit(WeatherLoadingST(isLoading: true));
-
     try {
       wf = WeatherFactory(StrConst.apiKey, language: Language.ENGLISH);
       _cityName = await weatherRepo.getCurrentCity();
-      final weather = await wf!.currentWeatherByCityName(_cityName!);
+      Weather weather = await wf!.currentWeatherByCityName(_cityName!);
 
-      log(weather.toString());
+      if (weather.areaName != null) {
+        var n = json.encode(weather);
+        log(n);
+        weatherModel = weatherModelFromJson(n);
+      }
+
+      emit(WeatherLoadingST(isLoading: false));
+      emit(CurrentWeatherLoadedST(
+          city: _cityName!, weatherModel: weatherModel!));
     } catch (e) {
+      log(_cityName!);
       log(e.toString());
     }
   }

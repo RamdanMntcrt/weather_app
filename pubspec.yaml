@@ -47,6 +47,8 @@ dependencies:
   geolocator:
   weather:
   geocoding:
+  intl:
+  glassmorphism_ui:
 
 dev_dependencies:
   flutter_test:

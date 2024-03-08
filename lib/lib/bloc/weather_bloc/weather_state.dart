@@ -7,7 +7,12 @@ abstract class WeatherActionState {}
 
 class WeatherInitial extends WeatherState {}
 
-class CurrentWeatherLoadedST extends WeatherState {}
+class CurrentWeatherLoadedST extends WeatherState {
+  final String city;
+  final WeatherModel weatherModel;
+
+  CurrentWeatherLoadedST({required this.city, required this.weatherModel});
+}
 
 class WeatherSearchedST extends WeatherState {}
 
@@ -26,3 +31,5 @@ class WeatherConnectionErrorState extends WeatherState {
 }
 
 class SearchVoiceActionST extends WeatherState {}
+
+class WeatherClearState extends WeatherState {}

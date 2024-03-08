@@ -1,16 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/lib/bloc/splash_bloc/splash_bloc.dart';
+import 'package:weather_app/lib/bloc/weather_bloc/weather_bloc.dart';
 
-import '../screens/home_screen/home_screen.dart';
-
-import '../screens/splash_screen.dart';
-
-final SplashBloc _splashBloc = SplashBloc();
+import '../presentation/screens/home_screen/home_screen.dart';
+import '../presentation/screens/splash_screen.dart';
 
 class RouteGenerator {
-  static Route<dynamic>? generateRoute(RouteSettings settings) {
+  final SplashBloc _splashBloc = SplashBloc();
+
+  Route<dynamic>? generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
@@ -18,7 +20,7 @@ class RouteGenerator {
         _splashBloc.add(NavigationEvent());
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                value: _splashBloc, child: SplashScreen()));
+                value: _splashBloc, child: const SplashScreen()));
 
       case '/Home':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
@@ -35,5 +37,9 @@ class RouteGenerator {
         ),
       );
     });
+  }
+
+  void dispose() {
+    _splashBloc.close();
   }
 }

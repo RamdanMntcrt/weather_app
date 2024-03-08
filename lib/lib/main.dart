@@ -14,11 +14,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RouteGenerator routeGenerator = RouteGenerator();
     return ScreenUtilInit(
       designSize: const Size(390, 844),
-      builder: (_, child) => const MaterialApp(
+      builder: (_, child) => MaterialApp(
         title: 'Flutter Demo',
-        onGenerateRoute: RouteGenerator.generateRoute,
+        onGenerateRoute: routeGenerator.generateRoute,
         initialRoute: '/',
       ),
     );
