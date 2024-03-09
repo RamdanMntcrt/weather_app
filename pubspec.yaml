@@ -49,6 +49,9 @@ dependencies:
   geocoding:
   intl:
   glassmorphism_ui:
+  flutter_svg:
+  video_player:
+  glass:
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +78,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/png/
-    - assets/jpg/
+    - assets/mov/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -88,10 +92,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: 'assets/fonts/Manrope-Regular.ttf'
+        - asset: 'assets/fonts/Manrope-Medium.ttf'
+        - asset: 'assets/fonts/Manrope-Light.ttf'
+        - asset: 'assets/fonts/Manrope-SemiBold.ttf'
+        - asset: 'assets/fonts/Manrope-Bold.ttf'
+        - asset: 'assets/fonts/Manrope-ExtraBold.ttf'
+        - asset: 'assets/fonts/Manrope-ExtraLight.ttf'
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

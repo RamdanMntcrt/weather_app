@@ -2,9 +2,6 @@ import 'dart:developer';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather/weather.dart';
-
-import '../../resources/utils/string_constants.dart';
 
 class WeatherRepo {
   Future<String> getCurrentCity() async {

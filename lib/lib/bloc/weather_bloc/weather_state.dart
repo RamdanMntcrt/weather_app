@@ -10,8 +10,12 @@ class WeatherInitial extends WeatherState {}
 class CurrentWeatherLoadedST extends WeatherState {
   final String city;
   final WeatherModel weatherModel;
+  final List<String> weatherData;
 
-  CurrentWeatherLoadedST({required this.city, required this.weatherModel});
+  CurrentWeatherLoadedST(
+      {required this.city,
+      required this.weatherModel,
+      required this.weatherData});
 }
 
 class WeatherSearchedST extends WeatherState {}

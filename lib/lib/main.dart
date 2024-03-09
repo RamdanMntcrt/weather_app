@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:weather_app/lib/di/injection_container.dart';
 import 'package:weather_app/lib/resources/route_helper.dart';
+
+import 'di/injection_container.dart';
 
 void main() {
   initDI();
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(390, 844),
       builder: (_, child) => MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Manrope',
+        ),
         title: 'Flutter Demo',
         onGenerateRoute: routeGenerator.generateRoute,
         initialRoute: '/',
