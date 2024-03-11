@@ -7,12 +7,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:video_player/video_player.dart';
 import 'package:weather_app/lib/bloc/weather_bloc/weather_bloc.dart';
 import 'package:weather_app/lib/data/models/weather_model.dart';
 import 'package:weather_app/lib/presentation/screens/home_screen/components/glass_tile.dart';
 import 'package:weather_app/lib/presentation/screens/home_screen/components/info_tile.dart';
-import 'package:weather_app/lib/presentation/widgets/strect_scaffold_widget.dart';
+import 'package:weather_app/lib/presentation/screens/home_screen/components/search_tile.dart';
 import 'package:weather_app/lib/resources/utils/color_constants.dart';
 
 import '../../../di/injection_container.dart';
@@ -84,71 +83,81 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             if (state is CurrentWeatherLoadedST) {
-              return StretchScaffold(
-                child: Scaffold(
-                  backgroundColor: ClrConst.accentColor1,
-                  body: SafeArea(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 50.h,
-                        ),
-                        BlocBuilder<WeatherBloc, WeatherState>(
-                          buildWhen: (p, c) => c is CurrentWeatherLoadedST,
-                          bloc: weatherBloc,
-                          builder: (context, state) {
-                            String? city = 'Unknown City';
-                            String? desc = '';
-                            double? temp = 0;
-                            String? icon = 'assets/png/sunny.png';
-                            List<String> weatherData = [];
+              return Scaffold(
+                backgroundColor: ClrConst.accentColor1,
+                body: SafeArea(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.sp),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 50.h,
+                          ),
+                          SearchTile(
+                            onSearch: (val) {},
+                          ),
+                          SizedBox(
+                            height: 50.h,
+                          ),
+                          BlocBuilder<WeatherBloc, WeatherState>(
+                            buildWhen: (p, c) => c is CurrentWeatherLoadedST,
+                            bloc: weatherBloc,
+                            builder: (context, state) {
+                              String? city = 'Unknown City';
+                              String? desc = '';
+                              double? temp = 0;
+                              String? icon = 'assets/png/sunny.png';
+                              List<String> weatherData = [];
 
-                            if (state is CurrentWeatherLoadedST) {
-                              weatherModel = state.weatherModel;
-                              desc = weatherModel!.weather![0].main;
-                              city = weatherModel!.name!;
-                              temp = weatherModel!.main!.temp! - 273.15;
-                              icon = getIcon(weatherModel!.weather![0].main!)!;
-                              weatherData = state.weatherData;
-                            }
+                              if (state is CurrentWeatherLoadedST) {
+                                weatherModel = state.weatherModel;
+                                desc = weatherModel!.weather![0].main;
+                                city = weatherModel!.name!;
+                                temp = weatherModel!.main!.temp! - 273.15;
+                                icon =
+                                    getIcon(weatherModel!.weather![0].main!)!;
+                                weatherData = state.weatherData;
+                              }
 
-                            return Column(
-                              children: [
-                                Center(
-                                  child: FittedBox(
-                                    child: WeatherWidget(
-                                        icon: icon,
-                                        temp: temp.toStringAsFixed(1),
-                                        city: city,
-                                        desc: desc!),
+                              return Column(
+                                children: [
+                                  Center(
+                                    child: FittedBox(
+                                      child: WeatherWidget(
+                                          icon: icon,
+                                          temp: temp.toStringAsFixed(1),
+                                          city: city,
+                                          desc: desc!),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 50.sp),
-                                SizedBox(
-                                  height: 200.h,
-                                  child: ListView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: 4,
-                                          itemBuilder: (context, index) {
-                                            return InfoTile(
-                                                title: title![index],
-                                                icon: icons![index],
-                                                value: weatherData[index]);
-                                          })
-                                      .animate()
-                                      .scale(
-                                          duration: const Duration(
-                                              milliseconds: 700)),
-                                )
-                              ],
-                            );
-                          },
-                        )
-                      ],
+                                  SizedBox(height: 50.sp),
+                                  SizedBox(
+                                    height: 200.h,
+                                    child: ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: 4,
+                                            itemBuilder: (context, index) {
+                                              return InfoTile(
+                                                  title: title![index],
+                                                  icon: icons![index],
+                                                  value: weatherData[index]);
+                                            })
+                                        .animate()
+                                        .scale(
+                                            duration: const Duration(
+                                                milliseconds: 700)),
+                                  )
+                                ],
+                              );
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -171,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? getIcon(String? weather) {
     log(weather!);
 
-    if (weather == null) return 'assets/png/sunny.png';
+    if (weather.isEmpty) return 'assets/png/sunny.png';
 
     switch (weather.toLowerCase()) {
       case 'rain':

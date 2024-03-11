@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,7 +23,10 @@ class WeatherWidget extends StatelessWidget {
         children: [
           Text(
             city,
-            style: const TextStyle(fontSize: 22),
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           SizedBox(height: 10.h),
           SizedBox(

@@ -52,6 +52,7 @@ dependencies:
   flutter_svg:
   video_player:
   glass:
+  speech_to_text:
 
 dev_dependencies:
   flutter_test:
