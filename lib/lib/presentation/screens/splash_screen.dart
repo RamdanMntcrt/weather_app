@@ -9,8 +9,6 @@ import 'package:weather_app/lib/resources/utils/color_constants.dart';
 
 import '../../bloc/splash_bloc/splash_bloc.dart';
 
-
-
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 

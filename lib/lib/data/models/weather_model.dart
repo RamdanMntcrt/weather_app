@@ -96,7 +96,7 @@ class Clouds {
 
 class Coord {
   final double? lon;
-  final int? lat;
+  final double? lat;
 
   Coord({
     this.lon,
@@ -105,7 +105,7 @@ class Coord {
 
   factory Coord.fromJson(Map<String, dynamic> json) => Coord(
         lon: json["lon"]?.toDouble(),
-        lat: json["lat"],
+        lat: json["lat"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -232,7 +232,7 @@ class Wind {
   factory Wind.fromJson(Map<String, dynamic> json) => Wind(
         speed: json["speed"]?.toDouble(),
         deg: json["deg"],
-        gust: json["gust"].toDouble(),
+        gust: json["gust"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

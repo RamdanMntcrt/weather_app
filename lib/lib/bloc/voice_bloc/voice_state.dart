@@ -5,8 +5,16 @@ abstract class VoiceState {}
 
 class VoiceInitial extends VoiceState {}
 
-class VoiceListeningST extends VoiceState {}
+class VoiceListeningST extends VoiceState {
+  final bool isListening;
 
-class VoiceTextLoadedST extends VoiceState {}
+  VoiceListeningST({required this.isListening});
+}
+
+class VoiceTextLoadedST extends VoiceState {
+  final String text;
+
+  VoiceTextLoadedST({required this.text});
+}
 
 class VoiceErrorST extends VoiceState {}

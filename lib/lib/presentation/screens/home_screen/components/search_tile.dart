@@ -1,11 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:weather_app/lib/resources/utils/color_constants.dart';
+import 'package:weather_app/lib/resources/utils/string_constants.dart';
 
 class SearchTile extends StatelessWidget {
   final Function(String val) onSearch;
+  final Function() onVoiceInput;
+  final TextEditingController searchController;
 
-  const SearchTile({super.key, required this.onSearch});
+  const SearchTile(
+      {super.key,
+      required this.onSearch,
+      required this.onVoiceInput,
+      required this.searchController});
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +25,30 @@ class SearchTile extends StatelessWidget {
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
+                          color: ClrConst.greyClr.withOpacity(0.5),
                           blurRadius: 4.sp,
                           offset: const Offset(4, 2))
                     ],
-                    color: Colors.black54,
+                    color: ClrConst.blackClr.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(12.sp)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: TextFormField(
+                        controller: searchController,
                         textInputAction: TextInputAction.search,
                         keyboardType: TextInputType.text,
                         onFieldSubmitted: (val) {
-                          onSearch(val);
+                          if (val != '') {
+                            onSearch(val);
+                            searchController.clear();
+                          } else {
+                            onSearch(StrConst.emptyString);
+                          }
                         },
-                        cursorColor: Colors.white,
-                        style: const TextStyle(color: Colors.white),
+                        cursorColor: ClrConst.whiteClr,
+                        style: TextStyle(color: ClrConst.whiteClr),
                         decoration: InputDecoration(
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
@@ -51,10 +65,11 @@ class SearchTile extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           FocusScope.of(context).unfocus();
+                          onVoiceInput();
                         },
-                        child: const Icon(
+                        child: Icon(
                           CupertinoIcons.mic,
-                          color: Colors.white,
+                          color: ClrConst.whiteClr,
                         ),
                       ),
                     )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:weather_app/lib/resources/utils/color_constants.dart';
 
 class InfoTile extends StatelessWidget {
   final String title, icon, value;
@@ -15,10 +16,11 @@ class InfoTile extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Container(
-        width: 70.w,
+        width: 70.sp,
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            border: Border.all(width: 2.sp, color: Colors.white30),
+            color: ClrConst.whiteClr.withOpacity(0.2),
+            border: Border.all(
+                width: 2.sp, color: ClrConst.whiteClr.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(12.sp)),
         child: Column(
           children: [

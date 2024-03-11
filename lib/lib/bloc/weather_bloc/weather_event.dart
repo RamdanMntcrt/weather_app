@@ -5,10 +5,10 @@ abstract class WeatherEvent {}
 
 class GetCurrentWeatherET extends WeatherEvent {}
 
-class SearchWeatherET extends WeatherEvent {}
+class SearchWeatherET extends WeatherEvent {
+  final String cityName;
 
-class WeatherServiceConnectionET extends WeatherEvent {
-  final String? apiKey;
-
-  WeatherServiceConnectionET({required this.apiKey});
+  SearchWeatherET({required this.cityName});
 }
+
+

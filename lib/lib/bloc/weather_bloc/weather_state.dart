@@ -26,14 +26,16 @@ class WeatherLoadingST extends WeatherState {
   WeatherLoadingST({required this.isLoading});
 }
 
-class WeatherConnectionSuccessState extends WeatherState {}
+class WeatherConnectionSuccessST extends WeatherState {}
 
-class WeatherConnectionErrorState extends WeatherState {
+class WeatherErrorST extends WeatherState {
   final String msg;
 
-  WeatherConnectionErrorState({required this.msg});
+  WeatherErrorST({required this.msg});
 }
 
 class SearchVoiceActionST extends WeatherState {}
 
-class WeatherClearState extends WeatherState {}
+class WeatherClearST extends WeatherState {}
+
+class WeatherNavigateST extends WeatherState {}

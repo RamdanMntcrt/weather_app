@@ -19,7 +19,7 @@ part 'weather_state.dart';
 WeatherFactory? wf;
 String? _cityName;
 WeatherRepo weatherRepo = WeatherRepo();
-WeatherModel? weatherModel;
+
 List<String> weatherInfoList = [];
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
@@ -29,11 +29,12 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     });
 
     on<GetCurrentWeatherET>(getCurrentWeatherMethod);
-    on<WeatherServiceConnectionET>(weatherConnectionMethod);
+    on<SearchWeatherET>(searchWeatherMethod);
   }
 
   FutureOr<void> getCurrentWeatherMethod(
       GetCurrentWeatherET event, Emitter<WeatherState> emit) async {
+    WeatherModel? weatherModel;
     emit(WeatherLoadingST(isLoading: true));
     try {
       wf = WeatherFactory(StrConst.apiKey, language: Language.ENGLISH);
@@ -44,23 +45,22 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         var n = json.encode(weather);
         log(n);
         weatherModel = weatherModelFromJson(n);
-        // Extract required information
-        int humidity = weatherModel!.main!.humidity!;
-        double windSpeed = weatherModel!.wind!.speed!;
-        int sunrise = weatherModel!.sys!.sunrise!;
-        int sunset = weatherModel!.sys!.sunset!;
+
+        int humidity = weatherModel.main!.humidity!;
+        double windSpeed = weatherModel.wind!.speed!;
+        int sunrise = weatherModel.sys!.sunrise!;
+        int sunset = weatherModel.sys!.sunset!;
 
         String formattedSunrise = DateFormat.jm()
             .format(DateTime.fromMillisecondsSinceEpoch(sunrise * 1000));
         String formattedSunset = DateFormat.jm()
             .format(DateTime.fromMillisecondsSinceEpoch(sunset * 1000));
 
-        // Create a list of strings
         weatherInfoList = [
-          '$humidity %', // Humidity
-          '$windSpeed m/s', // Wind Speed
-          formattedSunrise, // Sunrise
-          formattedSunset, // Sunset
+          '$humidity %',
+          '$windSpeed m/s',
+          formattedSunrise,
+          formattedSunset,
         ];
       }
 
@@ -76,12 +76,52 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     }
   }
 
-  FutureOr<void> weatherConnectionMethod(
-      WeatherServiceConnectionET event, Emitter<WeatherState> emit) {
+  FutureOr<void> searchWeatherMethod(
+      SearchWeatherET event, Emitter<WeatherState> emit) async {
+    WeatherModel? weatherModel;
+
+    emit(WeatherLoadingST(isLoading: true));
+
     try {
+      await Future.delayed(const Duration(milliseconds: 3000));
       wf = WeatherFactory(StrConst.apiKey, language: Language.ENGLISH);
+
+      Weather weather = await wf!.currentWeatherByCityName(event.cityName);
+
+      if (weather.areaName != null) {
+        var n = json.encode(weather);
+        log(n);
+        weatherModel = weatherModelFromJson(n);
+
+        int humidity = weatherModel.main!.humidity!;
+        double windSpeed = weatherModel.wind!.speed!;
+        int sunrise = weatherModel.sys!.sunrise!;
+        int sunset = weatherModel.sys!.sunset!;
+
+        String formattedSunrise = DateFormat.jm()
+            .format(DateTime.fromMillisecondsSinceEpoch(sunrise * 1000));
+        String formattedSunset = DateFormat.jm()
+            .format(DateTime.fromMillisecondsSinceEpoch(sunset * 1000));
+
+        // Create a list of strings
+        weatherInfoList = [
+          '$humidity %',
+          '$windSpeed m/s',
+          formattedSunrise,
+          formattedSunset,
+        ];
+      }
+
+      emit(WeatherLoadingST(isLoading: false));
+      emit(CurrentWeatherLoadedST(
+          city: _cityName!,
+          weatherModel: weatherModel!,
+          weatherData: weatherInfoList));
     } catch (e) {
-      emit(WeatherConnectionErrorState(msg: 'Error connecting to the cloud'));
+      if (e is OpenWeatherAPIException) {
+        emit(WeatherLoadingST(isLoading: false));
+        emit(WeatherErrorST(msg: 'city not found'));
+      }
     }
   }
 }

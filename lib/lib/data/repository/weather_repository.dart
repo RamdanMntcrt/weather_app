@@ -18,7 +18,7 @@ class WeatherRepo {
 
     log(placeMark.toString());
 
-    String? city = placeMark[0].administrativeArea;
+    String? city = placeMark[0].locality;
 
     return city ?? 'Kerala';
   }
