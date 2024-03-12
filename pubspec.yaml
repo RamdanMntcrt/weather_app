@@ -37,24 +37,17 @@ dependencies:
   cupertino_icons: ^1.0.6
   get_it:
   flutter_bloc:
-  dio:
-  dio_cookie_manager:
-  dio_http_cache:
-  shared_preferences:
-  path_provider:
   flutter_screenutil:
   flutter_animate:
   geolocator:
   weather:
   geocoding:
   intl:
-  glassmorphism_ui:
-  flutter_svg:
-  video_player:
-  glass:
   speech_to_text:
   fluttertoast:
-
+  flutter_spinkit:
+  permission_handler:
+  connectivity_plus:
 
 dev_dependencies:
   flutter_test:
